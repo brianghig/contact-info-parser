@@ -40,15 +40,20 @@ public class PipelineManagerImpl implements PipelineManager {
 		 */
 		pipeline.add(this.factory.createPhoneExtractor());
 		/*
-		 * Then Organization because we can use org/company suffix
+		 * Third, Organization because we can use org/company suffix
 		 * clues, or possibly the host URL from the email address
 		 */
 		pipeline.add(this.factory.createOrganizationExtractor());
 		/*
-		 * Finally, Name because it will be more easily extracted
+		 * Fourth, Name because it will be more easily extracted
 		 * from a smaller data set
 		 */
 		pipeline.add(this.factory.createNameExtractor());
+		/*
+		 * Finally, collect any remaining lines into
+		 * the 'other' field so we retain all input data
+		 */
+		pipeline.add(this.factory.createLeftoverExtractor());
 		
 		return pipeline;
 	}

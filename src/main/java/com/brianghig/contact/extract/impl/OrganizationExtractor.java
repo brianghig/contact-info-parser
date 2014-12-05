@@ -8,8 +8,7 @@ import com.brianghig.contact.model.ContactInfo;
 public class OrganizationExtractor implements Extractor {
 
 	public List<String> extract(List<String> lines, ContactInfo contact) {
-		// TODO Auto-generated method stub
-		return null;
+		return lines;
 	}
 
 }
