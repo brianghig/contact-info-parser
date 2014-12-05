@@ -9,22 +9,20 @@
 	<description>Contact Information Parser</description>
 
 	<properties>
-		<jersey-version>1.18</jersey-version>
+		<jersey-version>2.13</jersey-version>
 		<commons-lang-version>3.3.2</commons-lang-version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
+			<groupId>org.glassfish.jersey.bundles</groupId>
+			<artifactId>jaxrs-ri</artifactId>
 			<version>${jersey-version}</version>
-			<!--<scope>provided</scope> -->
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>${jersey-version}</version>
-			<!--<scope>provided</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
