@@ -1,11 +1,16 @@
 package com.brianghig.contact.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,6 +44,15 @@ public class ContactInfoEndpoint {
 		this.pipelineFactory = factory;
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<String, Object> info() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("success", Boolean.TRUE);
+		data.put("message", "The application deployed successfully!");
+		return data;
+	}
+	
 	/**
 	 * Accepts raw user input, cleans it, and sends it through
 	 * the extraction pipeline. Then returns the structured Contact
@@ -49,6 +63,7 @@ public class ContactInfoEndpoint {
 	 * @return
 	 */
 	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	public ContactInfo parse(
 			@FormParam("input") String input) {
 		
