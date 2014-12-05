@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.brianghig.contact.extract.Extractor;
+import com.brianghig.contact.extract.impl.phone.PhoneFormatter;
 import com.brianghig.contact.model.ContactInfo;
 
 public class FaxExtractor implements Extractor {
@@ -25,7 +26,8 @@ public class FaxExtractor implements Extractor {
 				// Remove all characters except decimals
 				// \\^([0-9]+)
 				String numberLine = originalLine.replaceAll("[^.0-9]", "");
-				if(numberLine.length() == 10) {
+				if(numberLine.length() >= 10) {
+					numberLine = PhoneFormatter.formatPhoneNumber(numberLine);
 					contact.setFaxNumber(numberLine);
 					// Add all of the remaining lines since we found our match
 					remainingLines.addAll(lines);

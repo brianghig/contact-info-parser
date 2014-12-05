@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.brianghig.contact.extract.Extractor;
+import com.brianghig.contact.extract.impl.phone.PhoneFormatter;
 import com.brianghig.contact.model.ContactInfo;
 
 public class PhoneExtractor implements Extractor {
@@ -22,7 +23,8 @@ public class PhoneExtractor implements Extractor {
 			// Remove all characters except decimals
 			// \\^([0-9]+)
 			String numberLine = originalLine.replaceAll("[^.0-9]", "");
-			if(numberLine.length() == 10) {
+			if(numberLine.length() >= 10) {
+				numberLine = PhoneFormatter.formatPhoneNumber(numberLine);
 				contact.setPhoneNumber(numberLine);
 				// Add all of the remaining lines since we found our match
 				remainingLines.addAll(lines);
