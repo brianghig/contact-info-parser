@@ -32,7 +32,7 @@ public class EmailExtractor implements Extractor {
 			String line = lines.remove(i);
 			Matcher matcher = pattern.matcher(line);
 			if( matcher.matches() ) {
-				contact.setEmail(line);
+				contact.setEmailAddress(line);
 				// Add all of the remaining lines since we found our match
 				remainingLines.addAll(lines);
 				break lineLoop;

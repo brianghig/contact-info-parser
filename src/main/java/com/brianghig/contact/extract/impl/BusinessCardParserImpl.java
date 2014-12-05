@@ -3,12 +3,15 @@ package com.brianghig.contact.extract.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.brianghig.contact.extract.Extractor;
 import com.brianghig.contact.extract.ExtractorFactory;
-import com.brianghig.contact.extract.PipelineManager;
+import com.brianghig.contact.extract.IBusinessCardParser;
 import com.brianghig.contact.model.ContactInfo;
+import com.brianghig.contact.model.IContactInfo;
 
-public class PipelineManagerImpl implements PipelineManager {
+public class BusinessCardParserImpl implements IBusinessCardParser {
 
 	private ExtractorFactory factory;
 	
@@ -16,7 +19,7 @@ public class PipelineManagerImpl implements PipelineManager {
 		this.factory = factory;
 	}
 	
-	public PipelineManagerImpl() {
+	public BusinessCardParserImpl() {
 		this.factory = new ExtractorFactory();
 	}
 
@@ -36,16 +39,21 @@ public class PipelineManagerImpl implements PipelineManager {
 		 */
 		pipeline.add(this.factory.createEmailExtractor());
 		/*
-		 * Second, Phone because it's also easily identifiable
+		 * Second, Fax since if it exists, it will likely
+		 * be prefixed with an indicator
+		 */
+		pipeline.add(this.factory.createFaxExtractor());
+		/*
+		 * Third, Phone because it's also easily identifiable
 		 */
 		pipeline.add(this.factory.createPhoneExtractor());
 		/*
-		 * Third, Organization because we can use org/company suffix
+		 * Fourth, Organization because we can use org/company suffix
 		 * clues, or possibly the host URL from the email address
 		 */
 		pipeline.add(this.factory.createOrganizationExtractor());
 		/*
-		 * Fourth, Name because it will be more easily extracted
+		 * Fifth, Name because it will be more easily extracted
 		 * from a smaller data set
 		 */
 		pipeline.add(this.factory.createNameExtractor());
@@ -63,7 +71,10 @@ public class PipelineManagerImpl implements PipelineManager {
 	 * @param contactLines the raw input of non-classified contact information
 	 * @return structured contact information extracted from the raw text input
 	 */
-	public ContactInfo process(List<String> contactLines) {
+	public IContactInfo getContactInfo(String document) {
+		
+		// Pre-process the document into individual lines
+		List<String> contactLines = this.cleanInputLines(document);
 		
 		// The object that will be modified during the pipeline
 		ContactInfo contact = new ContactInfo();
@@ -86,4 +97,23 @@ public class PipelineManagerImpl implements PipelineManager {
 		return contact;
 		
 	}
+	
+	/**
+	 * Extract cleaned lines of text from the input
+	 * @param input
+	 * @return
+	 */
+	protected List<String> cleanInputLines(String input) {
+		
+		String[] inputLines = StringUtils.split(input, StringUtils.LF);
+		List<String> cleanedLines = new ArrayList<String>();
+		for(String rawLine : inputLines) {
+			String cleanedLine = StringUtils.trimToNull(rawLine);
+			if(cleanedLine != null) {
+				cleanedLines.add(cleanedLine);
+			}
+		}
+		return cleanedLines;
+	}
+	
 }

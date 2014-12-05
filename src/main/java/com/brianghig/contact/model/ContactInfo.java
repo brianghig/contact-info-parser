@@ -3,12 +3,13 @@ package com.brianghig.contact.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ContactInfo {
+public class ContactInfo implements IContactInfo {
 
 	private String name;
-	private String email;
+	private String emailAddress;
 	private String organization;
-	private String phone;
+	private String phoneNumber;
+	private String faxNumber;
 	private Collection<String> other;
 	
 	public String getName() {
@@ -18,11 +19,11 @@ public class ContactInfo {
 		this.name = name;
 		return this;
 	}
-	public String getEmail() {
-		return email;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
-	public ContactInfo setEmail(String email) {
-		this.email = email;
+	public ContactInfo setEmailAddress(String email) {
+		this.emailAddress = email;
 		return this;
 	}
 	public String getOrganization() {
@@ -32,12 +33,18 @@ public class ContactInfo {
 		this.organization = organization;
 		return this;
 	}
-	public String getPhone() {
-		return phone;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public ContactInfo setPhone(String phone) {
-		this.phone = phone;
+	public ContactInfo setPhoneNumber(String phone) {
+		this.phoneNumber = phone;
 		return this;
+	}
+	public String getFaxNumber() {
+		return faxNumber;
+	}
+	public void setFaxNumber(String faxNumber) {
+		this.faxNumber = faxNumber;
 	}
 	public Collection<String> getOther() {
 		initOther();

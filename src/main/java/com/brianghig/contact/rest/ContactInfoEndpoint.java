@@ -1,8 +1,6 @@
 package com.brianghig.contact.rest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.FormParam;
@@ -12,36 +10,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.brianghig.contact.extract.PipelineFactory;
-import com.brianghig.contact.extract.PipelineManager;
-import com.brianghig.contact.model.ContactInfo;
+import com.brianghig.contact.extract.BusinessCardParserFactory;
+import com.brianghig.contact.extract.IBusinessCardParser;
+import com.brianghig.contact.model.IContactInfo;
 
 @Path("contact")
 public class ContactInfoEndpoint {
 
-	private PipelineFactory pipelineFactory = new PipelineFactory();
-	private PipelineManager pipelineManager;
+	private BusinessCardParserFactory businessCardParserFactory = new BusinessCardParserFactory();
+	private IBusinessCardParser businessCardParser;
 	
 	public ContactInfoEndpoint() {
 		// Initialize the pipeline manager from the default pipeline factory
-		this.pipelineManager = this.pipelineFactory.createPipelineManager();
+		this.businessCardParser = this.businessCardParserFactory.createBusinessCardParser();
 	}
 	
-	public ContactInfoEndpoint(PipelineFactory pipelineFactory) {
-		this.pipelineFactory = pipelineFactory;
+	public ContactInfoEndpoint(BusinessCardParserFactory pipelineFactory) {
+		this.businessCardParserFactory = pipelineFactory;
 		
 		// Initialize the pipeline manager from the input pipeline factory
-		this.pipelineManager = this.pipelineFactory.createPipelineManager();
+		this.businessCardParser = this.businessCardParserFactory.createBusinessCardParser();
 	}
 	
 	/**
 	 * Allow for overrides of the Pipeline Factory
 	 * @param factory
 	 */
-	public void setPipelineFactory(PipelineFactory factory) {
-		this.pipelineFactory = factory;
+	public void setPipelineFactory(BusinessCardParserFactory factory) {
+		this.businessCardParserFactory = factory;
 	}
 	
 	@GET
@@ -64,34 +60,13 @@ public class ContactInfoEndpoint {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public ContactInfo parse(
+	public IContactInfo parse(
 			@FormParam("input") String input) {
 		
-		// Pre-process and clean the input
-		List<String> cleanedLines = cleanInputLines(input);
-		
-		ContactInfo info = pipelineManager.process(cleanedLines);
+		IContactInfo info = businessCardParser.getContactInfo(input);
 		
 		return info;
 		
-	}
-
-	/**
-	 * Extract cleaned lines of text from the input
-	 * @param input
-	 * @return
-	 */
-	protected List<String> cleanInputLines(String input) {
-		
-		String[] inputLines = StringUtils.split(input, StringUtils.LF);
-		List<String> cleanedLines = new ArrayList<String>();
-		for(String rawLine : inputLines) {
-			String cleanedLine = StringUtils.trimToNull(rawLine);
-			if(cleanedLine != null) {
-				cleanedLines.add(cleanedLine);
-			}
-		}
-		return cleanedLines;
 	}
 	
 }

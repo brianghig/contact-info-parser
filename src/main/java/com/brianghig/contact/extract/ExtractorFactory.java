@@ -1,6 +1,7 @@
 package com.brianghig.contact.extract;
 
 import com.brianghig.contact.extract.impl.EmailExtractor;
+import com.brianghig.contact.extract.impl.FaxExtractor;
 import com.brianghig.contact.extract.impl.LeftoverExtractor;
 import com.brianghig.contact.extract.impl.NameExtractor;
 import com.brianghig.contact.extract.impl.OrganizationExtractor;
@@ -22,6 +23,10 @@ public class ExtractorFactory {
 	
 	public Extractor createPhoneExtractor() {
 		return new PhoneExtractor();
+	}
+	
+	public Extractor createFaxExtractor() {
+		return new FaxExtractor();
 	}
 	
 	public Extractor createLeftoverExtractor() {
