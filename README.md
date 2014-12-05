@@ -5,5 +5,6 @@ Java-based application that accepts line-delimited contact information (e.g., fr
 
 See it in action at http://www.brianghig.com/contact/index.html
 
+Architectural Design:
 
-![](https://github.com/brianghig/contact-info-parser/tree/master/doc/BusinessCardParserDesign.jpg)
+![](https://raw.githubusercontent.com/brianghig/contact-info-parser/master/doc/BusinessCardParserDesign.jpg)
